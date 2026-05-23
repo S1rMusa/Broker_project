@@ -1,0 +1,112 @@
+<app-public-header />
+
+<section class="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-slate-900 text-white">
+  <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
+  <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
+    <div class="max-w-2xl animate-slide-up">
+      <span class="inline-block rounded-full bg-accent-500/20 px-4 py-1 text-sm font-medium text-accent-300">
+        Kenya's #1 Lender Matching Platform
+      </span>
+      <h1 class="mt-6 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+        Connect with the right lender. <span class="text-accent-400">No money moved here.</span>
+      </h1>
+      <p class="mt-6 text-lg text-primary-100/90">
+        Broker matches borrowers with licensed Kenyan lenders. We analyze eligibility, score compatibility, and refer qualified applications — lenders process loans externally.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a routerLink="/auth/register" class="btn-accent">Apply as Borrower</a>
+        <a routerLink="/lenders" class="btn-ghost !border-white/30 !text-white hover:!bg-white/10">Compare Lenders</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h2 class="font-display text-2xl font-bold">Live Market Dashboard</h2>
+      <p class="text-sm text-slate-500">Rates update every few seconds · Mock data</p>
+    </div>
+    <span class="flex items-center gap-2 text-sm text-emerald-600">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+      </span>
+      Live
+    </span>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="glass-card p-5 lg:col-span-2">
+      <app-market-chart />
+    </div>
+    <div class="space-y-4">
+      <div class="glass-card p-4">
+        <p class="text-xs font-medium uppercase text-slate-500">Avg Approval Speed</p>
+        <p class="text-3xl font-bold text-primary-600">{{ snapshot().approval_speed_avg }} days</p>
+      </div>
+      <div class="glass-card p-4">
+        <p class="mb-3 text-xs font-medium uppercase text-slate-500">Rate Movement</p>
+        @for (r of snapshot().rates.slice(0, 5); track r.label) {
+          <div class="flex items-center justify-between py-1.5 text-sm">
+            <span>{{ r.label }}</span>
+            <span class="font-semibold">{{ r.rate }}%</span>
+            @if (r.trend === 'down') {
+              <span class="badge-up">↓</span>
+            } @else if (r.trend === 'up') {
+              <span class="badge-down">↑</span>
+            } @else {
+              <span class="text-slate-400">—</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    @for (rank of snapshot().lender_rankings; track rank.name) {
+      <div class="glass-card p-4 text-center">
+        <p class="font-semibold text-sm truncate">{{ rank.name }}</p>
+        <p class="text-2xl font-bold text-primary-600 mt-1">{{ rank.score }}</p>
+        <p class="text-xs" [class.text-emerald-600]="rank.change >= 0" [class.text-rose-600]="rank.change < 0">
+          {{ rank.change >= 0 ? '+' : '' }}{{ rank.change }} pts
+        </p>
+      </div>
+    }
+  </div>
+
+  <div class="mt-6 glass-card p-5">
+    <h3 class="font-semibold mb-3">Trending Offers</h3>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      @for (offer of snapshot().trending_offers; track offer.lender) {
+        <div class="rounded-xl border border-slate-100 p-3 dark:border-slate-700">
+          <p class="font-medium text-sm">{{ offer.lender }}</p>
+          <p class="text-xs text-slate-500 mt-1">{{ offer.offer }}</p>
+          <p class="text-primary-600 font-bold mt-2">{{ offer.rate }}% APR</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="bg-slate-100/50 py-16 dark:bg-slate-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <h2 class="font-display text-2xl font-bold mb-8">Featured Lenders</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      @for (lender of featuredLenders; track lender.id) {
+        <app-lender-card [lender]="lender" />
+      }
+    </div>
+    <div class="mt-8 text-center">
+      <a routerLink="/lenders" class="btn-primary">View All Lenders</a>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-200 py-8 dark:border-slate-800">
+  <div class="mx-auto max-w-7xl px-4 text-center text-sm text-slate-500 sm:px-6">
+    <p>Broker does not transfer money, hold funds, or issue loans.</p>
+    <p class="mt-1">© 2026 Broker Kenya. Licensed lender partnerships.</p>
+  </div>
+</footer>

@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+  }
+  body {
+    @apply font-sans bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-2xl border border-white/30 bg-white/70 shadow-xl backdrop-blur-md
+      dark:border-white/10 dark:bg-slate-900/70;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-2.5
+      text-sm font-semibold text-white shadow-lg shadow-primary-600/25 transition-all
+      hover:bg-primary-700 hover:shadow-primary-600/40 active:scale-[0.98];
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-xl bg-accent-500 px-5 py-2.5
+      text-sm font-semibold text-white shadow-lg shadow-accent-500/25 transition-all
+      hover:bg-accent-600 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-200
+      bg-white/50 px-5 py-2.5 text-sm font-medium text-slate-700 transition-all
+      hover:bg-white dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-200
+      dark:hover:bg-slate-800;
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-2.5 text-sm
+      outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20
+      dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100;
+  }
+  .badge-up {
+    @apply inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs
+      font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400;
+  }
+  .badge-down {
+    @apply inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs
+      font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-400;
+  }
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-slate-200 dark:bg-slate-700;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: theme('fontFamily.display');
+  }
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
